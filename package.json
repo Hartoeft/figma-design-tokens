@@ -1,0 +1,34 @@
+{
+    "name": "figma-design-tokens",
+    "version": "1.0.0",
+    "description": "Gets styles from a figma project. Will return a typescript file with your defined styles from figma",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "format": "prettier --write '**/*.{ts}'",
+        "get-design-tokens": "ts-node src/generate-design-tokens.ts"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Hartoeft/figma-design-tokens.git"
+    },
+    "keywords": [
+        "figma",
+        "design-tokens",
+        "css",
+        "typescript"
+    ],
+    "author": "Christian Hartøft",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Hartoeft/figma-design-tokens/issues"
+    },
+    "homepage": "https://github.com/Hartoeft/figma-design-tokens#readme",
+    "devDependencies": {
+        "@types/node-fetch": "^2.6.2",
+        "@types/prettier": "^2.6.3",
+        "dotenv": "^16.0.1",
+        "node-fetch": "^2.6.7",
+        "prettier": "2.7.1",
+        "ts-node": "^10.8.1"
+    }
+}
