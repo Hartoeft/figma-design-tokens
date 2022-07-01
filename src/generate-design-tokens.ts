@@ -1,34 +1,40 @@
-import { FIGMA_CONFIG } from '../config/figma-config';
+import { config } from '../config/figma-config';
+import { Config, NodesList } from './models/config.model';
 import { Style } from './models/figma-styles.model';
-import { FigmaDocument, IColorObj, ITypographyStyles, TypeStyle } from './models/figma.model';
+import {
+    FigmaDocument,
+    IEffect,
+    IStyleObject,
+    ITypographyStyles,
+    TypeStyle,
+} from './models/figma.model';
+import { getFigmaFile, getFigmaStyles } from './services/figma.service';
 import { createTokenFile } from './utils/create-file';
-import { FindTokens } from './utils/find-tokens';
-import { formatColorTokens, formatTypographyTokens } from './utils/format-tokens';
-import { getFigmaFile, getFigmaStyles } from './utils/get-figma-data';
+import { findColorTokens, findEffectTokens, findTypographyTokens } from './utils/find-tokens';
+import {
+    formatColorTokens,
+    formatEffectToken,
+    formatTypographyTokens,
+} from './utils/format-tokens';
 import { getFluidValue } from './utils/get-fluid-value';
 
-interface NodesList {
-    nodeId: string;
-    lookFor: 'typography' | 'colors' | 'effects';
-}
+export class GenerateDesignTokens {
+    styles: Style[] = [];
+    config: Config;
 
-// Remember to add your figma token to an .env file
-class GenerateDesignTokens {
-    colorNodeDocument?: FigmaDocument;
-    typographyNodeDocument?: FigmaDocument;
-    styles?: Style[];
+    constructor(config: Config) {
+        this.config = config;
 
-    constructor(nodesList: NodesList[]) {
-        if (!process.env.FIGMA_TOKEN) {
+        if (!config.figmaToken && !process.env.FIGMA_TOKEN) {
             console.error(
                 'Add your FIGMA_TOKEN to an .env file, located in the root of the project',
             );
         }
 
-        this.init(nodesList);
+        this.init(config.nodesList);
     }
 
-    init = async (nodesList: NodesList[]) => {
+    private init = async (nodesList: NodesList[]) => {
         try {
             this.styles = await this.getStyles();
             if (!this.styles) {
@@ -38,42 +44,22 @@ class GenerateDesignTokens {
             Promise.all(
                 nodesList.map(async (node) => {
                     const nodeDocument = await this.getNodeDocument(node.nodeId);
+                    if (!nodeDocument) {
+                        return;
+                    }
                     switch (node.lookFor) {
                         case 'colors':
-                            await this.generateColorTokens(nodeDocument);
-                            break;
+                            return await this.generateColorTokens(nodeDocument);
                         case 'typography':
-                            await this.generateTypographyTokens(nodeDocument);
-                            break;
+                            return await this.generateTypographyTokens(nodeDocument);
+                        case 'effects':
+                            return await this.generateEffectsToken(nodeDocument);
 
                         default:
-                            return new Promise((resolve) => resolve([]));
+                            return 'Not found';
                     }
                 }),
             );
-
-            // try {
-            // this.styles = await this.getStyles();
-            // if (!this.styles) {
-            //     return;
-            // }
-
-            //     const nodes = await this.getDesignNodes(nodeIds);
-
-            //     if (!nodes?.length) {
-            //         console.error('No nodes found');
-            //     }
-
-            //     this.colorNodeDocument = nodes?.[0];
-            //     this.typographyNodeDocument = nodes?.[1];
-
-            //     if (this.colorNodeDocument) {
-            //         await this.generateColorTokens();
-            //     }
-
-            //     if (this.typographyNodeDocument) {
-            //         await this.generateTypographyTokens();
-            //     }
         } catch (error) {
             console.error('Error trying to get data from Figma api', error);
         }
@@ -90,44 +76,25 @@ class GenerateDesignTokens {
             } = await getFigmaStyles();
             return styles;
         } catch (error) {
-            console.error('Error trying to get styles from sFigma api', error);
+            console.error('Error trying to get styles from Figma api', error);
+            return [];
         }
     };
 
-    /**
-     * Gets a node/frame from a figma file by an id
-     */
-    getDesignNodes = async (nodeIds: string[]): Promise<FigmaDocument[] | undefined> => {
+    private generateColorTokens = async (nodeDocument: FigmaDocument) => {
         try {
-            // If we end up calling to many nodes, then consider getting the intire figma file.
-            // Not being used, now, since the file size is pretty large
-
-            const nodes = await Promise.all(
-                nodeIds.map(async (nodeId) => {
-                    return await this.getNodeDocument(nodeId);
-                }),
-            );
-
-            return nodes;
-        } catch (error) {
-            console.error('Error trying to get Figma nodes', error);
-        }
-    };
-
-    generateColorTokens = async (nodeDocument: FigmaDocument) => {
-        try {
-            const token = new FindTokens();
-            const colorStyles: IColorObj[] =
+            const colorStyles: IStyleObject[] =
                 this.styles
                     ?.filter((style) => style.style_type === 'FILL')
                     .map((style) => {
-                        token.getColorTokens(style.node_id, nodeDocument?.children || []);
-                        return <IColorObj>{
+                        const color = findColorTokens(style.node_id, nodeDocument?.children || []);
+                        const colorItem: IStyleObject = {
                             nodeId: style.node_id,
                             description: style.description,
                             name: style.name,
-                            color: token.color || '',
+                            color: color || '',
                         };
+                        return colorItem;
                     }) || [];
 
             const colorTokens = formatColorTokens(colorStyles);
@@ -140,24 +107,27 @@ class GenerateDesignTokens {
         console.info('Finished getting color styles!');
     };
 
-    generateTypographyTokens = async (nodeDocument: FigmaDocument) => {
+    private generateTypographyTokens = async (nodeDocument: FigmaDocument) => {
         try {
-            const tokens = new FindTokens();
-            tokens.typography;
             const typographyStyles: ITypographyStyles[] =
                 this.styles
                     ?.filter((style) => style.style_type === 'TEXT')
                     .map((style) => {
-                        tokens.getTypographyTokens(style.node_id, nodeDocument?.children || []);
+                        const typographyValue = findTypographyTokens(
+                            style.node_id,
+                            nodeDocument?.children || [],
+                        );
 
-                        return <ITypographyStyles>{
+                        const typographyItem: ITypographyStyles = {
                             name: style.name || 'Missing name',
                             description: style.description || '',
                             nodeId: style.node_id,
-                            cssStyle: tokens.typography
-                                ? this.formatTypographyCss(tokens.typography)
+                            cssStyle: typographyValue
+                                ? this.formatTypographyCss(typographyValue)
                                 : undefined,
                         };
+
+                        return typographyItem;
                     }) || [];
 
             const colorTokens = formatTypographyTokens(typographyStyles);
@@ -168,11 +138,48 @@ class GenerateDesignTokens {
         }
     };
 
+    private generateEffectsToken = async (nodeDocument: FigmaDocument) => {
+        try {
+            const effectStyles: IEffect[] = this.styles
+                .filter((style) => style.style_type === 'EFFECT')
+                .map((style) => {
+                    const effectValue = findEffectTokens(style.node_id, nodeDocument?.children);
+
+                    const item: IEffect = {
+                        nodeId: style.node_id,
+                        description: style.description,
+                        name: style.name,
+                    };
+
+                    if (effectValue) {
+                        item.effect = effectValue;
+                    }
+
+                    return item;
+                });
+
+            const effectTokens = formatEffectToken(effectStyles);
+            await createTokenFile(effectTokens, 'design-token-effects');
+            console.info('Finished getting effect styles!');
+        } catch (error) {
+            console.error('Error trying to get color styles', error);
+        }
+    };
+
     private getNodeDocument = async (nodeId: string) => {
-        const figmaFileData = await getFigmaFile(nodeId);
-        const doc = figmaFileData.nodes[nodeId].document as FigmaDocument;
-        console.info(`Finished getting node id ${nodeId}`);
-        return doc;
+        try {
+            const figmaFileData = await getFigmaFile(nodeId);
+            const node = figmaFileData.nodes[nodeId];
+
+            if (!node) {
+                throw new Error("Node doesn't exist");
+            }
+
+            console.info(`Finished getting node id ${nodeId}`);
+            return node.document as FigmaDocument;
+        } catch (error) {
+            console.error(`Error trying to get node id ${nodeId}`, error);
+        }
     };
 
     private formatTypographyCss = (typography: TypeStyle) => {
@@ -189,7 +196,4 @@ class GenerateDesignTokens {
     };
 }
 
-new GenerateDesignTokens([
-    { nodeId: FIGMA_CONFIG.NODE_ID_COLOR, lookFor: 'colors' },
-    { nodeId: FIGMA_CONFIG.NODE_ID_TYPOGRAPHY, lookFor: 'typography' },
-]);
+new GenerateDesignTokens(config);

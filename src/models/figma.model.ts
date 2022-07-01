@@ -14,11 +14,17 @@ export interface ITypographyStyles {
     description?: string;
 }
 
-export interface IColorObj {
+export interface IStyleObject {
     name: string;
     color: string;
+    nodeId?: string;
+    description?: string;
+}
+export interface IEffect {
+    name: string;
     nodeId: string;
     description?: string;
+    effect?: Effect;
 }
 
 export interface IColor {
@@ -56,6 +62,7 @@ export interface Fill {
 export interface Styles {
     fill?: string;
     text?: string;
+    effect?: string;
 }
 
 export interface BackgroundColor {
@@ -100,6 +107,22 @@ export interface TypeStyle {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface StyleOverrideTable {}
 
+export type EffectType = 'INNER_SHADOW' | 'DROP_SHADOW' | 'LAYER_BLUR' | 'BACKGROUND_BLUR';
+
+export interface Effect {
+    type: EffectType;
+    visible: boolean;
+    radius: number;
+    color?: Color;
+    blendMode?: string;
+    offset?: {
+        x: 0.0;
+        y: 40.0;
+    };
+    spread?: number;
+    showShadowBehindNode?: boolean;
+}
+
 export interface Child {
     id: string;
     name: string;
@@ -117,7 +140,7 @@ export interface Child {
     backgroundColor: BackgroundColor;
     layoutMode: string;
     itemSpacing: number;
-    effects: any[];
+    effects: Effect[];
     characters: string;
     style?: TypeStyle;
     styles: Styles;
@@ -163,7 +186,7 @@ export interface Nodes {
 
 export interface FigmaFileModel {
     name: string;
-    lastModified: Date;
+    lastModified: string;
     thumbnailUrl: string;
     version: string;
     role: string;
