@@ -103,8 +103,6 @@ export class GenerateDesignTokens {
         } catch (error) {
             console.error('Error trying to get color styles', error);
         }
-
-        console.info('Finished getting color styles!');
     };
 
     private generateTypographyTokens = async (nodeDocument: FigmaDocument) => {
