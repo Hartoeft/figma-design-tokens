@@ -9,7 +9,7 @@ export interface CssStyle {
 
 export interface ITypographyStyles {
     name: string;
-    cssStyle?: CssStyle;
+    cssStyle?: CssStyle | string;
     nodeId?: string;
     description?: string;
 }
@@ -113,7 +113,7 @@ export interface Effect {
     type: EffectType;
     visible: boolean;
     radius: number;
-    color?: Color;
+    color: Color;
     blendMode?: string;
     offset?: {
         x: 0.0;

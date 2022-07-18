@@ -8,22 +8,19 @@ import {
     ITypographyStyles,
     TypeStyle,
 } from './models/figma.model';
-import { getFigmaFile, getFigmaStyles } from './services/figma.service';
+import { getFigmaFileByNodeId, getFigmaStyles } from './services/figma.service';
 import { createTokenFile } from './utils/create-file';
 import { findColorTokens, findEffectTokens, findTypographyTokens } from './utils/find-tokens';
-import {
-    formatColorTokens,
-    formatEffectToken,
-    formatTypographyTokens,
-} from './utils/format-tokens';
+import { colorTokenOutput, formatEffectToken, typographyTokenOutput } from './utils/format-tokens';
 import { getFluidValue } from './utils/get-fluid-value';
+
+export let CONFIG: Config;
 
 export class GenerateDesignTokens {
     styles: Style[] = [];
-    config: Config;
 
     constructor(config: Config) {
-        this.config = config;
+        CONFIG = config;
 
         if (!config.figmaToken && !process.env.FIGMA_TOKEN) {
             console.error(
@@ -37,9 +34,6 @@ export class GenerateDesignTokens {
     private init = async (nodesList: NodesList[]) => {
         try {
             this.styles = await this.getStyles();
-            if (!this.styles) {
-                return;
-            }
 
             Promise.all(
                 nodesList.map(async (node) => {
@@ -56,12 +50,13 @@ export class GenerateDesignTokens {
                             return await this.generateEffectsToken(nodeDocument);
 
                         default:
-                            return 'Not found';
+                            console.error(`No match for ${node.lookFor}`);
                     }
                 }),
             );
+            console.info('Completed getting data from Figma api');
         } catch (error) {
-            console.error('Error trying to get data from Figma api', error);
+            console.error(error);
         }
     };
 
@@ -76,29 +71,37 @@ export class GenerateDesignTokens {
             } = await getFigmaStyles();
             return styles;
         } catch (error) {
-            console.error('Error trying to get styles from Figma api', error);
-            return [];
+            throw new Error(
+                `Error trying to get styles. Are you sure you are using the right Figma file id: ${error}`,
+            );
         }
     };
 
     private generateColorTokens = async (nodeDocument: FigmaDocument) => {
         try {
+            console.group('Mapping colors');
             const colorStyles: IStyleObject[] =
                 this.styles
                     ?.filter((style) => style.style_type === 'FILL')
                     .map((style) => {
                         const color = findColorTokens(style.node_id, nodeDocument?.children || []);
+                        if (!color) {
+                            console.info(
+                                `Info: Color style ${style.name} is not being used in your color node in figma `,
+                            );
+                        }
+
                         const colorItem: IStyleObject = {
                             nodeId: style.node_id,
                             description: style.description,
                             name: style.name,
-                            color: color || '',
+                            color: color || ``,
                         };
                         return colorItem;
                     }) || [];
-
-            const colorTokens = formatColorTokens(colorStyles);
-            await createTokenFile(colorTokens, 'design-token-color');
+            console.groupEnd();
+            const colorTokens = colorTokenOutput(colorStyles);
+            await createTokenFile(colorTokens, 'color', nodeDocument.id, CONFIG.fileExportType);
             console.info('Finished getting color styles!');
         } catch (error) {
             console.error('Error trying to get color styles', error);
@@ -128,8 +131,13 @@ export class GenerateDesignTokens {
                         return typographyItem;
                     }) || [];
 
-            const colorTokens = formatTypographyTokens(typographyStyles);
-            await createTokenFile(colorTokens, 'design-token-typography');
+            const colorTokens = typographyTokenOutput(typographyStyles);
+            await createTokenFile(
+                colorTokens,
+                'typography',
+                nodeDocument.id,
+                CONFIG.fileExportType,
+            );
             console.info('Finished getting typography styles!');
         } catch (error) {
             console.error('Error trying to get typography styles', error);
@@ -157,7 +165,7 @@ export class GenerateDesignTokens {
                 });
 
             const effectTokens = formatEffectToken(effectStyles);
-            await createTokenFile(effectTokens, 'design-token-effects');
+            await createTokenFile(effectTokens, 'effects', nodeDocument.id);
             console.info('Finished getting effect styles!');
         } catch (error) {
             console.error('Error trying to get color styles', error);
@@ -166,7 +174,7 @@ export class GenerateDesignTokens {
 
     private getNodeDocument = async (nodeId: string) => {
         try {
-            const figmaFileData = await getFigmaFile(nodeId);
+            const figmaFileData = await getFigmaFileByNodeId(nodeId);
             const node = figmaFileData.nodes[nodeId];
 
             if (!node) {
@@ -181,16 +189,37 @@ export class GenerateDesignTokens {
     };
 
     private formatTypographyCss = (typography: TypeStyle) => {
-        return {
-            fontFamily: typography?.fontFamily,
-            fontSize: `${getFluidValue(typography?.fontSize, typography?.fontSize * 0.9)}`,
-            fontWeight: typography?.fontWeight,
-            letterSpacing: typography?.letterSpacing
-                ? `${typography?.letterSpacing / typography?.fontSize}em`
-                : 'normal',
-            lineHeight: `${Math.round(typography?.lineHeightPx) / typography?.fontSize}`,
-            textTransform: typography?.textCase === 'UPPER' ? 'uppercase' : 'normal',
-        };
+        const isFluidFontSize = CONFIG.fluidFont?.desktopContainerSize;
+        const isCssOutput = CONFIG.fileExportType === 'css';
+
+        if (isCssOutput) {
+            // TODO: Add support for fluid font size
+            return `
+                font-family: '${typography.fontFamily}';
+                font-size: ${typography?.fontSize}px;
+                font-weight: ${typography?.fontWeight};
+                letter-spacing: ${typography?.letterSpacing / typography?.fontSize}em;
+                line-height: ${Math.round(typography?.lineHeightPx) / typography?.fontSize};
+                text-transform: ${typography?.textCase === 'UPPER' ? 'uppercase' : 'none'};
+            `;
+        } else {
+            return {
+                fontFamily: typography?.fontFamily,
+                fontSize: isFluidFontSize
+                    ? `${getFluidValue(
+                          CONFIG.fluidFont!.desktopContainerSize,
+                          typography?.fontSize,
+                          typography?.fontSize * 0.9,
+                      )}`
+                    : `${typography?.fontSize}px`,
+                fontWeight: typography?.fontWeight,
+                letterSpacing: typography?.letterSpacing
+                    ? `${typography?.letterSpacing / typography?.fontSize}em`
+                    : 'normal',
+                lineHeight: `${Math.round(typography?.lineHeightPx) / typography?.fontSize}`,
+                textTransform: typography?.textCase === 'UPPER' ? 'uppercase' : 'none',
+            };
+        }
     };
 }
 
