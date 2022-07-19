@@ -1,4 +1,4 @@
-import { Color, Fill } from '../models/figma.model';
+import { Color } from '../models/figma.model';
 
 export const convertToRgba = (color: Color) => {
     const r = Math.round(color.r * 255)
