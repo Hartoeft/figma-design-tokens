@@ -17,7 +17,7 @@ import { getFluidValue } from './utils/get-fluid-value';
 export let CONFIG: Config;
 
 export class GenerateDesignTokens {
-    styles: Style[] = [];
+    private styles: Style[] = [];
 
     constructor(config: Config) {
         CONFIG = config;
@@ -101,7 +101,7 @@ export class GenerateDesignTokens {
                     }) || [];
             console.groupEnd();
             const colorTokens = colorTokenOutput(colorStyles);
-            await createTokenFile(colorTokens, 'color', nodeDocument.id, CONFIG.fileExportType);
+            await createTokenFile(colorTokens, 'color', nodeDocument.id);
             console.info('Finished getting color styles!');
         } catch (error) {
             console.error('Error trying to get color styles', error);
@@ -132,12 +132,7 @@ export class GenerateDesignTokens {
                     }) || [];
 
             const colorTokens = typographyTokenOutput(typographyStyles);
-            await createTokenFile(
-                colorTokens,
-                'typography',
-                nodeDocument.id,
-                CONFIG.fileExportType,
-            );
+            await createTokenFile(colorTokens, 'typography', nodeDocument.id);
             console.info('Finished getting typography styles!');
         } catch (error) {
             console.error('Error trying to get typography styles', error);

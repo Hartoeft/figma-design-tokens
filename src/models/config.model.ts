@@ -21,5 +21,9 @@ export interface Config {
          * Add the max width for your content container e.g. 1440 (px)
          */
         desktopContainerSize: number;
-    }
+    };
+    /**
+     * Choose where to output files. Defaults to ./dist
+     */
+    distFolder?: string;
 }
