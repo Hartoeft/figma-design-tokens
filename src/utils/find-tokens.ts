@@ -38,7 +38,8 @@ export const findColorTokens = (nodeId: string, children: Child[]): string | und
     const getColorTokens = (nodeId: string, children: Child[]) => {
         for (const child of children) {
             if (child.styles?.fill === nodeId && child.fills?.[0]) {
-                colorValue = convertToRgba(child.fills[0]);
+                const rgba = convertToRgba(child.fills[0].color);
+                colorValue = rgba;
                 found = true;
                 break;
             } else {

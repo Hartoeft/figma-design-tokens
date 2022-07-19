@@ -10,13 +10,13 @@
  * getFluidValue(20, 18); // returns 'clamp(1.8rem, 1.3888888888888888vw, 2.0rem);';
  * getFluidValue(20); // returns '2.0rem';
  */
-export const getFluidValue = (maxSize: number, minSize?: number): string => {
+export const getFluidValue = (contentMaxWidth: number, maxSize: number, minSize?: number): string => {
     const globalRemValue = 10;
     if (!minSize) {
         return `${maxSize / globalRemValue}rem`;
     }
 
-    const fluidValue = (maxSize / 1440) * 100; // Calculate the fluid value, until our max content width.
+    const fluidValue = (maxSize / contentMaxWidth) * 100; // Calculate the fluid value, until our max content width.
     const min = `${minSize / globalRemValue}rem`;
     const val = `${fluidValue}vw`;
     const max = `${maxSize / globalRemValue}rem`;

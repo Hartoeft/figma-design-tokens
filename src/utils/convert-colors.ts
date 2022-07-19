@@ -1,12 +1,16 @@
-import { Fill } from '../models/figma.model';
+import { Color } from '../models/figma.model';
 
-export const convertToRgba = (colorObj: Fill) => {
-    const { color } = colorObj;
-
-    const r = Math.round(color.r * 255).toFixed(0);
-    const g = Math.round(color.g * 255).toFixed(0);
-    const b = Math.round(color.b * 255).toFixed(0);
-    const a = color.a;
+export const convertToRgba = (color: Color) => {
+    const r = Math.round(color.r * 255)
+        .toFixed(0)
+        .toString();
+    const g = Math.round(color.g * 255)
+        .toFixed(0)
+        .toString();
+    const b = Math.round(color.b * 255)
+        .toFixed(0)
+        .toString();
+    const a = color.a.toFixed(2).toString();
 
     const rgba = `rgba(${r}, ${g}, ${b}, ${a})`;
 
@@ -23,4 +27,4 @@ export const convertToHex = (color: string) => {
     const hex = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
 
     return hex;
-}
+};

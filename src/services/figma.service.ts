@@ -1,23 +1,26 @@
-import fetch from 'node-fetch';
 import 'dotenv/config';
-import { FIGMA_CONFIG } from '../../config/figma-config';
-import { FigmaFileModel } from '../models/figma.model';
+import fetch from 'node-fetch';
+import { CONFIG } from '../generate-design-tokens';
 import { StylesApi } from '../models/figma-styles.model';
-const FILE_ID = FIGMA_CONFIG.FIGMA_FILE_ID;
+import { FigmaFileModel } from '../models/figma.model';
 
 const baseFigmaUrl = async (relativeUrl: string): Promise<any> => {
     const response = await fetch(`https://api.figma.com/v1/${relativeUrl}`, {
         headers: {
-            'X-FIGMA-TOKEN': process.env.FIGMA_TOKEN || FIGMA_CONFIG.FIGMA_TOKEN || '',
+            'X-FIGMA-TOKEN': process.env.FIGMA_TOKEN || CONFIG?.figmaToken || '',
         },
     });
     return response.json();
 };
 
-export const getFigmaFile = (nodeId: string): Promise<FigmaFileModel> => {
-    return baseFigmaUrl(`files/${FILE_ID}/nodes?ids=${nodeId}`);
+export const getFigmaFile = (): Promise<FigmaFileModel> => {
+    return baseFigmaUrl(`files/${CONFIG.figmaFileId}`);
+};
+
+export const getFigmaFileByNodeId = (nodeId: string): Promise<FigmaFileModel> => {
+    return baseFigmaUrl(`files/${CONFIG.figmaFileId}/nodes?ids=${nodeId}`);
 };
 
 export const getFigmaStyles = (): Promise<StylesApi> => {
-    return baseFigmaUrl(`files/${FILE_ID}/styles`);
+    return baseFigmaUrl(`files/${CONFIG.figmaFileId}/styles`);
 };
