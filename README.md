@@ -8,7 +8,8 @@
     FIGMA_TOKEN=ADD_YOUR_TOKEN_HERE
 ```
 
-- Example:
+- Create a typescript file and add the following to the file
+- Example ./src/design-tokens.ts
 
 ```ts
 import { GenerateDesignTokens } from 'figma-design-tokens';
@@ -28,26 +29,54 @@ new GenerateDesignTokens({
 });
 ```
 
-Will out something like this:
+- Open terminal and run following command in root folder `ts-node src/design-tokens.ts`
+- Optional: You could add it under your scripts in package.json. e.g.
+
+```json
+"scripts": {
+    "get-design-tokens": "ts-node src/design-tokens.ts"
+}
+```
+
+
+### Output example
+
+__Typescript color__ output example:
 
 ```ts
 /**
  *
  * @example background-color: rgba(53, 79, 82, 1.00);
  */
-export const greengreen60 = 'rgba(53, 79, 82, 1.00)';
+export const green60 = 'rgba(53, 79, 82, 1.00)';
 
 /**
  *
  * @example background-color: rgba(96, 123, 126, 1.00);
  */
-export const greengreen40 = 'rgba(96, 123, 126, 1.00)';
+export const green40 = 'rgba(96, 123, 126, 1.00)';
+...
+```
+
+__CSS color__ output example:
+
+```css
+:root {
+    ...
+    --blue: rgba(83, 109, 147, 1);
+
+    --green: rgba(53, 79, 82, 1);
+
+    --primary: rgba(96, 123, 126, 1);
+    ...
+}
+
 ...
 ```
 
 ### Typescript interfaces
 
-All typescript interfaces is not entirely accurate. I hope Figma, would a typings them self in the future.
+All typescript interfaces is not entirely accurate. I hope Figma, will add typings them self in the future.
 
 ### Prettier VS Code
 
