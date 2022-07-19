@@ -55,7 +55,8 @@ Remember to add the following to your `.vscode/settings.json` file:
 
 ```json
     "prettier.configPath": ".prettierrc.json"
+```
 
 ### Credits
 
-Big thanks to my former workplace IMPACT COMMERCE <https://impactcommerce.com>, who gave me sometime to look into this.
+Big thanks to my former workplace IMPACT COMMERCE <https://impactcommerce.com>, who gave me time to look into this.
