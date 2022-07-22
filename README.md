@@ -150,7 +150,7 @@ export const dropshadow = '0px 9px 24px 6px rgba(0, 0, 0, 0.12)';
     --dropshadowsmal: 0px 9px 24px 6px rgba(0, 0, 0, 0.12);
     ...
 }
-
+```
 
 ### Typescript interfaces
 
