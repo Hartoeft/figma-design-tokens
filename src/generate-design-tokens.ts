@@ -26,6 +26,10 @@ export class GenerateDesignTokens {
             console.error(
                 'Add your FIGMA_TOKEN to an .env file, located in the root of the project',
             );
+            return;
+        } else if (Array.isArray(config.nodesList) && !config.nodesList.length) {
+            console.error('Add at least one node list item');
+            return;
         }
 
         this.init(config.nodesList);
