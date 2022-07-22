@@ -41,7 +41,7 @@ new GenerateDesignTokens({
 
 ### Output example
 
-__Typescript color__ output example:
+#### __Color ts__ file
 
 ```ts
 /**
@@ -58,7 +58,7 @@ export const green40 = 'rgba(96, 123, 126, 1.00)';
 ...
 ```
 
-__CSS color__ output example:
+#### __Color CSS__ file
 
 ```css
 :root {
@@ -73,6 +73,84 @@ __CSS color__ output example:
 
 ...
 ```
+
+#### __Typography TS__ file
+
+```ts
+/**
+ *
+ * @example background-color: rgba(53, 79, 82, 1.00);
+ */
+export const green60 = 'rgba(53, 79, 82, 1.00)';
+
+/**
+ *
+ * @example background-color: rgba(96, 123, 126, 1.00);
+ */
+export const green40 = 'rgba(96, 123, 126, 1.00)';
+...
+```
+
+#### __Typography CSS__ file
+
+```css
+.body {
+    font-family: 'Roboto Flex';
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0em;
+    line-height: 1.375;
+    text-transform: none;
+}
+
+.display1 {
+    font-family: 'Roboto Flex';
+    font-size: 40px;
+    font-weight: 100;
+    letter-spacing: 0em;
+    line-height: 1.2;
+    text-transform: none;
+}
+
+.display2 {
+    font-family: 'Roboto Flex';
+    font-size: 36px;
+    font-weight: 100;
+    letter-spacing: 0em;
+    line-height: 1.19;
+    text-transform: none;
+}
+...
+```
+
+#### __Effects ts__ file
+
+```ts
+/**
+ * @description Use this to blur an image
+ * @example backdrop-filter: blur(5px);
+ */
+export const backgroundblur = 'blur(5px)';
+
+/**
+ *
+ * @example box-shadow: 0px 9px 24px 6px rgba(0, 0, 0, 0.12);
+ */
+export const dropshadow = '0px 9px 24px 6px rgba(0, 0, 0, 0.12)';
+...
+```
+
+#### __Effects CSS__ file
+
+```css
+:root {
+    ...
+    --backgroundblur: blur(5px);
+
+    --dropshadowsmal: 0px 9px 24px 6px rgba(0, 0, 0, 0.12);
+    ...
+}
+
 
 ### Typescript interfaces
 
