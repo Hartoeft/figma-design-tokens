@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync } from 'fs';
 import { writeFile } from 'fs/promises';
-import { CONFIG } from '..';
+import { CONFIG } from '../generate-design-tokens';
 
 export const createTokenFile = async (
     content: string | Uint8Array,
