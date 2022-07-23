@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import fetch from 'node-fetch';
-import { CONFIG } from '../generate-design-tokens';
+import { CONFIG } from '..';
 import { StylesApi } from '../models/figma-styles.model';
 import { FigmaFileModel } from '../models/figma.model';
 
