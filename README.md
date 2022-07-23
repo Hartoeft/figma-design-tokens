@@ -38,7 +38,6 @@ new GenerateDesignTokens({
 }
 ```
 
-
 ### Output example
 
 #### __Color ts__ file
