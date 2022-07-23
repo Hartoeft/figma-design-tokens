@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "Gets styles from a figma project. Will return a typescript file with your defined styles from figma",
     "scripts": {
-        "build": "tsc",
+        "clean-build": "rimraf dist",
+        "copy-readme": "cp README.md dist/README.md",
+        "build": "npm run clean-build && tsc && npm run copy-readme",
         "format": "prettier --write '**/*.{ts}'",
         "get-design-tokens": "ts-node example/tokens.ts"
     },
@@ -29,6 +31,7 @@
         "dotenv": "^16.0.1",
         "node-fetch": "^2.6.7",
         "prettier": "2.7.1",
+        "rimraf": "^3.0.2",
         "ts-node": "^10.8.1"
     }
 }
