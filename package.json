@@ -3,9 +3,9 @@
     "version": "1.0.0",
     "description": "Gets styles from a figma project. Will return a typescript file with your defined styles from figma",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc",
         "format": "prettier --write '**/*.{ts}'",
-        "get-design-tokens": "ts-node src/generate-design-tokens.ts"
+        "get-design-tokens": "ts-node example/tokens.ts"
     },
     "repository": {
         "type": "git",
