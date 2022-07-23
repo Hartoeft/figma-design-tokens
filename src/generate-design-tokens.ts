@@ -1,4 +1,3 @@
-import { config } from '../config/figma-config';
 import { Config, NodesList } from './models/config.model';
 import { Style } from './models/figma-styles.model';
 import {
@@ -19,6 +18,10 @@ export let CONFIG: Config;
 export class GenerateDesignTokens {
     private styles: Style[] = [];
 
+    /**
+     * Generates design token files from a Figma team library
+     * @param config - Configuration object
+     */
     constructor(config: Config) {
         CONFIG = config;
 
@@ -221,5 +224,3 @@ export class GenerateDesignTokens {
         }
     };
 }
-
-new GenerateDesignTokens(config);

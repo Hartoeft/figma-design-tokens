@@ -38,10 +38,11 @@ new GenerateDesignTokens({
 }
 ```
 
-
 ### Output example
 
 #### __Color ts__ file
+
+Filename: _design-token-effects-1-1-colors.ts_
 
 ```ts
 /**
@@ -60,6 +61,8 @@ export const green40 = 'rgba(96, 123, 126, 1.00)';
 
 #### __Color CSS__ file
 
+Filename: _design-token-effects-1-1-colors.css_
+
 ```css
 :root {
     ...
@@ -75,6 +78,8 @@ export const green40 = 'rgba(96, 123, 126, 1.00)';
 ```
 
 #### __Typography TS__ file
+
+Filename: _design-token-effects-1-2-typography.ts_
 
 ```ts
 /**
@@ -92,6 +97,8 @@ export const green40 = 'rgba(96, 123, 126, 1.00)';
 ```
 
 #### __Typography CSS__ file
+
+Filename: _design-token-effects-1-2-typography.css_
 
 ```css
 .body {
@@ -125,6 +132,8 @@ export const green40 = 'rgba(96, 123, 126, 1.00)';
 
 #### __Effects ts__ file
 
+Filename: _design-token-effects-1-3-effects.ts_
+
 ```ts
 /**
  * @description Use this to blur an image
@@ -141,6 +150,8 @@ export const dropshadow = '0px 9px 24px 6px rgba(0, 0, 0, 0.12)';
 ```
 
 #### __Effects CSS__ file
+
+Filename: _design-token-effects-1-3-effects.css_
 
 ```css
 :root {

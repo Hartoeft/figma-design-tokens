@@ -7,18 +7,19 @@ export const createTokenFile = async (
     outputName: string,
     nodeId: string,
 ) => {
-    const filePath = `${CONFIG.distFolder || 'dist'}`;
+    const filePath = `${CONFIG.distFolder || 'design/tokens'}`;
     const fileName = `design-token-effects-${nodeId
         .trim()
         .replaceAll(':', '-')
         .toLowerCase()}-${outputName}`;
+    const fileType = CONFIG.fileExportType || 'ts';
 
     try {
         if (!existsSync(filePath)) {
             mkdirSync(filePath, { recursive: true });
         }
 
-        writeFile(`${filePath}/${fileName}.${CONFIG.fileExportType}`, content, {
+        writeFile(`${filePath}/${fileName}.${fileType}`, content, {
             encoding: 'utf8',
             flag: 'w',
         });
