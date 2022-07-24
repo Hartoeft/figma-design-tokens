@@ -15,7 +15,7 @@
 import { GenerateDesignTokens } from 'figma-design-tokens';
 
 new GenerateDesignTokens({
-    figmaFileId: 'YOU_FILE_ID',
+    figmaFileId: 'YOUR_FILE_ID',
     figmaTeamId: 'YOUR_TEAM_ID',
     nodesList: [
         { nodeId: '1:1', lookFor: 'colors' },
@@ -23,9 +23,10 @@ new GenerateDesignTokens({
         { nodeId: '1:3', lookFor: 'effects' },
         { nodeId: '1:4', lookFor: 'effects' },
     ],
-
-    fileExportType: 'ts', // 'ts' | 'css'
-    distFolder: 'design/tokens' // defaults to dist'
+    // Optionals:
+    // fileExportType: 'css',
+    // distFolder: 'design/tokens',
+    // customFluidFontSizeFunction: (fontSize: number) => `${fontSize}rem`,
 });
 ```
 
