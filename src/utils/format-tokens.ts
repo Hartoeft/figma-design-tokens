@@ -161,16 +161,16 @@ const effectTypeReturnValue = (token: IEffect, isCssOutput: boolean) => {
 
         case 'DROP_SHADOW':
             exampleValue = 'box-shadow';
-            value = `${effect.offset?.x}px ${effect.offset?.y}px ${effect.radius}px ${effect.spread}px ${convertToRgba(
-                effect.color,
-            )}`;
+            value = `${effect.offset?.x || 0}px ${effect.offset?.y || 0}px ${effect.radius || 0}px ${
+                effect.spread || 0
+            }px ${convertToRgba(effect.color)}`;
             break;
 
         case 'INNER_SHADOW':
             exampleValue = 'box-shadow';
-            value = `inset ${effect.offset?.x}px ${effect.offset?.y}px ${effect.radius}px ${
+            value = `inset ${effect.offset?.x || 0}px ${effect.offset?.y || 0}px ${effect.radius || 0}px ${
                 effect.spread
-            }px #${convertToRgba(effect.color)}`;
+            }px ${convertToRgba(effect.color)}`;
             break;
 
         default:
