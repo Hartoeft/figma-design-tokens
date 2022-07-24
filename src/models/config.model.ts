@@ -22,7 +22,7 @@ export interface Config {
     /**
      * @description Add your personal figma api token or add it to an .env file
      */
-    figmaToken?: string;
+    figmaApiToken?: string;
 
     /**
      * @description The function will receive the font size as a number and must return a string

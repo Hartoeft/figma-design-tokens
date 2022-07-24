@@ -9,7 +9,9 @@ import { colorTokenOutput, formatEffectToken, typographyTokenOutput } from './ut
 export class GenerateDesignTokens {
     private config: Config;
     private styles: Style[] = [];
-    private isCssOutput: boolean;
+    public get isCssOutput(): boolean {
+        return this.config.fileExportType === 'css';
+    }
 
     /**
      * Generates design token files from a Figma team library
@@ -17,10 +19,15 @@ export class GenerateDesignTokens {
      */
     constructor(config: Config) {
         this.config = config;
-        this.isCssOutput = config.fileExportType === 'css';
 
-        if (!this.config.figmaToken && !process.env.FIGMA_TOKEN) {
-            console.error('Add your FIGMA_TOKEN to an .env file, located in the root of the project');
+        if (this.config.figmaApiToken) {
+            process.env.FIGMA_TOKEN = config.figmaApiToken;
+        }
+
+        if (!process.env.FIGMA_TOKEN) {
+            console.error(
+                'Add your FIGMA_TOKEN to an .env file, located in the root of the project',
+            );
             return;
         } else if (Array.isArray(this.config.nodesList) && !this.config.nodesList.length) {
             console.error('Add at least one node list item');

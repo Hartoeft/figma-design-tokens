@@ -3,10 +3,10 @@ import fetch from 'node-fetch';
 import { Style, StylesApi } from '../models/figma-styles.model';
 import { FigmaDocument, FigmaFileModel } from '../models/figma.model';
 
-const baseFigmaUrl = async (relativeUrl: string, figmaToken?: string): Promise<any> => {
+const baseFigmaUrl = async (relativeUrl: string): Promise<any> => {
     const response = await fetch(`https://api.figma.com/v1/${relativeUrl}`, {
         headers: {
-            'X-FIGMA-TOKEN': process.env.FIGMA_TOKEN || figmaToken || '',
+            'X-FIGMA-TOKEN': process.env.FIGMA_TOKEN || '',
         },
     });
     return response.json();
