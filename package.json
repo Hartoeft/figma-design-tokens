@@ -1,6 +1,6 @@
 {
     "name": "figma-design-tokens",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Gets styles from a figma project. Will return a typescript file with your defined styles from figma",
     "main": "src/index.ts",
     "scripts": {
