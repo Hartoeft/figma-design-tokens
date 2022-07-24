@@ -1,18 +1,17 @@
 import { existsSync, mkdirSync } from 'fs';
 import { writeFile } from 'fs/promises';
-import { CONFIG } from '../generate-design-tokens';
+import { FileExportType } from '../models/config.model';
 
 export const createTokenFile = async (
     content: string | Uint8Array,
     outputName: string,
     nodeId: string,
+    distFolder?: string,
+    fileExportType?: FileExportType,
 ) => {
-    const filePath = `${CONFIG.distFolder || 'design/tokens'}`;
-    const fileName = `design-token-effects-${nodeId
-        .trim()
-        .replaceAll(':', '-')
-        .toLowerCase()}-${outputName}`;
-    const fileType = CONFIG.fileExportType || 'ts';
+    const filePath = `${distFolder || 'design/tokens'}`;
+    const fileName = `design-token-effects-${nodeId.trim().replaceAll(':', '-').toLowerCase()}-${outputName}`;
+    const fileType = fileExportType || 'ts';
 
     try {
         if (!existsSync(filePath)) {

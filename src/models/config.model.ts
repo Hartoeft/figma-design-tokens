@@ -6,29 +6,34 @@ export interface NodesList {
     lookFor: 'typography' | 'colors' | 'effects';
 }
 
+export type FileExportType = 'ts' | 'css';
+
 export interface Config {
-    nodesList: NodesList[];
-    /**
-     * Exports a ts file with the design tokens or an css file with css variables
-     * Defaults to .ts
-     */
-    fileExportType?: 'ts' | 'css';
     figmaFileId: string;
     figmaTeamId: string;
-    figmaToken?: string; // Add your personal figma api token or add it to an .env file
+    nodesList: NodesList[];
+
     /**
-     * Optional: If you want to use a fluid font, you can set the container size
+     * @description Exports a ts file with the design tokens or an css file with css variables
+     * @default 'ts'
      */
-    fluidFont?: {
-        /**
-         * Add the max width for your content container e.g. 1440 (px),
-         * If you add a value then the font-size will be returned as a css clamp() value.
-         */
-        desktopContainerSize: number;
-        // customFluidFunction: Function; // TODO: Add support for custom fluid function
-    };
+    fileExportType?: FileExportType;
+
     /**
-     * Choose where to output files. Defaults to ./dist
+     * @description Add your personal figma api token or add it to an .env file
+     */
+    figmaToken?: string;
+
+    /**
+     * @description The function will receive the font size as a number and must return a string
+     * @example (fontSize: number) => `${fontSize}em`
+     * @returns string
+     */
+    customFluidFontSizeFunction?: (fontSize: number) => string;
+
+    /**
+     * @description Choose where to output design token files.
+     * @default './design/tokens'
      */
     distFolder?: string;
 }

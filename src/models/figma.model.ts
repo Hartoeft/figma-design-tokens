@@ -169,17 +169,8 @@ export interface FigmaDocument {
     effects: any[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ComponentSets {}
 
-export interface TEST {
-    key: string;
-    name: string;
-    styleType: string;
-    description: string;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Nodes {
     [key: string]: any;
 }
