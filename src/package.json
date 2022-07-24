@@ -1,6 +1,6 @@
 {
     "name": "figma-design-tokens",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Gets styles from a figma project. Will return a typescript file with your defined styles from figma",
     "repository": {
         "type": "git",
@@ -18,7 +18,7 @@
         "url": "https://github.com/Hartoeft/figma-design-tokens/issues"
     },
     "homepage": "https://github.com/Hartoeft/figma-design-tokens#readme",
-    "peerDependencies": {
+    "devDependencies": {
         "ts-node": "^10.8.1"
     }
 }
