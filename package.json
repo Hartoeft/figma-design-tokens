@@ -5,9 +5,8 @@
     "main": "src/index.ts",
     "scripts": {
         "clean-build": "rimraf dist",
-        "copy-readme": "cp README.md dist/README.md",
-        "copy-package": "cp src/package.json dist/package.json",
-        "build": "npm run clean-build && tsc && npm run copy-readme && npm run copy-package",
+        "copy-to-dist": "cp -R documentation/ dist/documentation && cp README.md dist/README.md && cp src/package.json dist/package.json",
+        "build": "npm run clean-build && tsc && npm run copy-to-dist",
         "format": "prettier --write '**/*.{ts}'",
         "get-design-tokens": "ts-node example/tokens.ts"
     },

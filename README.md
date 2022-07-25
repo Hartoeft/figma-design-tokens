@@ -1,5 +1,13 @@
 # figma-design-tokens
 
+Use this package to output defined styles in your figma document.
+
+Currently you can select too output __CSS__ (css classes and css-variables) or __typescript files__ to be used with styled-components like Emotion<https://emotion.sh/docs/introduction>. See example of output further below.
+
+- Currently working with __Text styles__, __Color styles__ and __Effects Styles__ from figma.
+- Remember to export your styles in figma as a team library.
+![figma](documentation/images/figma-library.jpg)
+
 ## How to use
 
 - Add your figma API Token in a environment ".env" file
@@ -30,7 +38,7 @@ new GenerateDesignTokens({
 });
 ```
 
-- Open terminal and run following command in root folder `ts-node src/design-tokens.ts`
+- Open terminal and run following command in root folder `npx ts-node src/design-tokens.ts`
 - Optional: You could add it under your scripts in package.json. e.g.
 
 ```json
@@ -48,15 +56,15 @@ Filename: _design-token-effects-1-1-colors.ts_
 ```ts
 /**
  *
- * @example background-color: rgba(53, 79, 82, 1.00);
+ * @example background-color: rgba(12, 39, 42, 1.00);
  */
-export const green60 = 'rgba(53, 79, 82, 1.00)';
+export const green100 = 'rgba(12, 39, 42, 1.00)';
 
 /**
  *
- * @example background-color: rgba(96, 123, 126, 1.00);
+ * @example background-color: rgba(53, 79, 82, 1.00);
  */
-export const green40 = 'rgba(96, 123, 126, 1.00)';
+export const green60 = 'rgba(53, 79, 82, 1.00)';
 ...
 ```
 
@@ -66,13 +74,11 @@ Filename: _design-token-effects-1-1-colors.css_
 
 ```css
 :root {
-    ...
-    --blue: rgba(83, 109, 147, 1);
+    --green40: rgba(96, 123, 126, 1);
 
-    --green: rgba(53, 79, 82, 1);
+    --green100: rgba(12, 39, 42, 1);
 
-    --primary: rgba(96, 123, 126, 1);
-    ...
+    --green60: rgba(53, 79, 82, 1);
 }
 
 ...
@@ -83,17 +89,23 @@ Filename: _design-token-effects-1-1-colors.css_
 Filename: _design-token-effects-1-2-typography.ts_
 
 ```ts
-/**
- *
- * @example background-color: rgba(53, 79, 82, 1.00);
- */
-export const green60 = 'rgba(53, 79, 82, 1.00)';
+export const displayH1 = {
+    fontSize: '40px',
+    fontFamily: 'Roboto Flex',
+    fontWeight: '100',
+    letterSpacing: 'normal',
+    lineHeight: '1.2',
+    textTransform: 'none',
+};
 
-/**
- *
- * @example background-color: rgba(96, 123, 126, 1.00);
- */
-export const green40 = 'rgba(96, 123, 126, 1.00)';
+export const bodyBold = {
+    fontSize: '16px',
+    fontFamily: 'Roboto Flex',
+    fontWeight: '600',
+    letterSpacing: 'normal',
+    lineHeight: '1.375',
+    textTransform: 'none',
+};
 ...
 ```
 
@@ -102,16 +114,7 @@ export const green40 = 'rgba(96, 123, 126, 1.00)';
 Filename: _design-token-effects-1-2-typography.css_
 
 ```css
-.body {
-    font-family: 'Roboto Flex';
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: 0em;
-    line-height: 1.375;
-    text-transform: none;
-}
-
-.display1 {
+.displayH1 {
     font-family: 'Roboto Flex';
     font-size: 40px;
     font-weight: 100;
@@ -120,12 +123,12 @@ Filename: _design-token-effects-1-2-typography.css_
     text-transform: none;
 }
 
-.display2 {
+.bodyBold {
     font-family: 'Roboto Flex';
-    font-size: 36px;
-    font-weight: 100;
+    font-size: 16px;
+    font-weight: 600;
     letter-spacing: 0em;
-    line-height: 1.19;
+    line-height: 1.375;
     text-transform: none;
 }
 ...
@@ -137,16 +140,16 @@ Filename: _design-token-effects-1-3-effects.ts_
 
 ```ts
 /**
- * @description Use this to blur an image
- * @example backdrop-filter: blur(5px);
+ *
+ * @example box-shadow: 0px 3px 14px 4px rgba(0, 0, 0, 0.25);
  */
-export const backgroundblur = 'blur(5px)';
+export const dropshadowLarge = '0px 3px 14px 4px rgba(0, 0, 0, 0.25)';
 
 /**
  *
  * @example box-shadow: 0px 9px 24px 6px rgba(0, 0, 0, 0.12);
  */
-export const dropshadow = '0px 9px 24px 6px rgba(0, 0, 0, 0.12)';
+export const dropshadowSmall = '0px 9px 24px 6px rgba(0, 0, 0, 0.12)';
 ...
 ```
 
@@ -156,10 +159,9 @@ Filename: _design-token-effects-1-3-effects.css_
 
 ```css
 :root {
-    ...
-    --backgroundblur: blur(5px);
+    --dropshadowLarge: 0px 3px 14px 4px rgba(0, 0, 0, 0.25);
 
-    --dropshadowsmal: 0px 9px 24px 6px rgba(0, 0, 0, 0.12);
+    --dropshadowSmall: 0px 9px 24px 6px rgba(0, 0, 0, 0.12);
     ...
 }
 ```
