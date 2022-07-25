@@ -25,9 +25,7 @@ export class GenerateDesignTokens {
         }
 
         if (!process.env.FIGMA_TOKEN) {
-            console.error(
-                'Add your FIGMA_TOKEN to an .env file, located in the root of the project',
-            );
+            console.error('Add your FIGMA_TOKEN to an .env file, located in the root of the project');
             return;
         } else if (Array.isArray(this.config.nodesList) && !this.config.nodesList.length) {
             console.error('Add at least one node list item');
@@ -176,7 +174,7 @@ export class GenerateDesignTokens {
 
     private formatTypographyCss = (typography: TypeStyle) => {
         const customSize = this.config.customFluidFontSizeFunction;
-        const size = customSize ? customSize(typography?.fontSize) : typography?.fontSize;
+        const size = customSize ? customSize(typography?.fontSize) : `${typography?.fontSize}px`;
 
         return `
             font-family: '${typography.fontFamily}';
