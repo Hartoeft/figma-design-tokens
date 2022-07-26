@@ -7,7 +7,7 @@
         "prepublish": "npm run build",
         "publish": "cd dist/ && npm publish",
         "clean-build": "rimraf dist",
-        "copy-to-dist": "cp -R documentation/ dist/documentation && cp README.md dist/README.md && cp src/package.json dist/package.json",
+        "copy-to-dist": "cp -R documentation/ dist/documentation && cp README.md dist/README.md && cp package.json dist/package.json",
         "build": "npm run clean-build && tsc && npm run copy-to-dist",
         "format": "prettier --write '**/*.{ts}'",
         "get-design-tokens": "ts-node example/tokens.ts"
