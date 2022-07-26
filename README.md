@@ -56,13 +56,13 @@ Filename: _design-token-effects-1-1-colors.ts_
 ```ts
 /**
  *
- * @example background-color: rgba(12, 39, 42, 1.00);
+ * @example backgroundColor: green100;
  */
 export const green100 = 'rgba(12, 39, 42, 1.00)';
 
 /**
  *
- * @example background-color: rgba(53, 79, 82, 1.00);
+ * @example backgroundColor: green60;
  */
 export const green60 = 'rgba(53, 79, 82, 1.00)';
 ...
@@ -79,9 +79,9 @@ Filename: _design-token-effects-1-1-colors.css_
     --green100: rgba(12, 39, 42, 1);
 
     --green60: rgba(53, 79, 82, 1);
-}
 
-...
+    ...
+}
 ```
 
 #### __Typography TS__ file
@@ -141,13 +141,12 @@ Filename: _design-token-effects-1-3-effects.ts_
 ```ts
 /**
  *
- * @example box-shadow: 0px 3px 14px 4px rgba(0, 0, 0, 0.25);
+ * @example boxShadow: dropshadowLarge;
  */
 export const dropshadowLarge = '0px 3px 14px 4px rgba(0, 0, 0, 0.25)';
 
 /**
- *
- * @example box-shadow: 0px 9px 24px 6px rgba(0, 0, 0, 0.12);
+ * @example boxShadow: dropshadowSmall;
  */
 export const dropshadowSmall = '0px 9px 24px 6px rgba(0, 0, 0, 0.12)';
 ...
