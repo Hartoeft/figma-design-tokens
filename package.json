@@ -4,6 +4,8 @@
     "description": "Gets styles from a figma project. Will return a typescript file with your defined styles from figma",
     "main": "src/index.ts",
     "scripts": {
+        "prepublish": "npm run build",
+        "publish": "cd dist/ && npm publish",
         "clean-build": "rimraf dist",
         "copy-to-dist": "cp -R documentation/ dist/documentation && cp README.md dist/README.md && cp src/package.json dist/package.json",
         "build": "npm run clean-build && tsc && npm run copy-to-dist",
