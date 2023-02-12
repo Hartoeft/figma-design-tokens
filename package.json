@@ -1,43 +1,43 @@
 {
-    "name": "figma-design-tokens",
-    "version": "1.0.5",
-    "description": "Gets styles from a figma project. Will return a typescript file with your defined styles from figma",
-    "main": "src/index.ts",
-    "scripts": {
-        "prepublish": "npm run build",
-        "publish": "cd dist/ && npm publish",
-        "clean-build": "rimraf dist",
-        "copy-to-dist": "cp -R documentation/ dist/documentation && cp README.md dist/README.md && cp package.json dist/package.json",
-        "build": "npm run clean-build && tsc && npm run copy-to-dist",
-        "format": "prettier --write '**/*.{ts}'",
-        "get-design-tokens": "ts-node example/tokens.ts"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Hartoeft/figma-design-tokens.git"
-    },
-    "keywords": [
-        "figma",
-        "design-tokens",
-        "css",
-        "css-variables",
-        "typescript",
-        "css-in-js",
-        "styled-components"
-    ],
-    "author": "Christian Hartøft",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/Hartoeft/figma-design-tokens/issues"
-    },
-    "homepage": "https://github.com/Hartoeft/figma-design-tokens#readme",
-    "devDependencies": {
-        "@types/node-fetch": "^2.6.2",
-        "@types/prettier": "^2.6.3",
-        "dotenv": "^16.0.1",
-        "node-fetch": "^2.6.7",
-        "prettier": "2.7.1",
-        "rimraf": "^3.0.2",
-        "ts-node": "^10.8.1"
-    }
+  "name": "figma-design-tokens",
+  "version": "1.0.5",
+  "description": "Gets styles from a figma project. Will return a typescript file with your defined styles from figma",
+  "main": "src/index.ts",
+  "scripts": {
+    "prepublish": "npm run build",
+    "publish": "cd dist/ && npm publish",
+    "clean-build": "rimraf dist",
+    "copy-to-dist": "cp -R documentation/ dist/documentation && cp README.md dist/README.md && cp package.json dist/package.json",
+    "build": "npm run clean-build && tsc && npm run copy-to-dist",
+    "format": "prettier --write '**/*.{ts}'",
+    "get-design-tokens": "ts-node example/tokens.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hartoeft/figma-design-tokens.git"
+  },
+  "keywords": [
+    "figma",
+    "design-tokens",
+    "css",
+    "css-variables",
+    "typescript",
+    "css-in-js",
+    "styled-components"
+  ],
+  "author": "Christian Hartøft",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hartoeft/figma-design-tokens/issues"
+  },
+  "homepage": "https://github.com/Hartoeft/figma-design-tokens#readme",
+  "devDependencies": {
+    "@types/node-fetch": "^2.6.2",
+    "@types/prettier": "^2.6.3",
+    "dotenv": "^16.0.1",
+    "node-fetch": "^2.6.7",
+    "prettier": "2.7.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.8.1"
+  }
 }
