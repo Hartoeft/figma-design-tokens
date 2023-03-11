@@ -170,13 +170,13 @@ export class GenerateDesignTokens {
     const size = customSize ? customSize(typography?.fontSize) : `${typography?.fontSize}px`;
 
     return `
-            font-family: '${typography.fontFamily}';
-            font-size:  ${size};
-            font-weight: ${typography?.fontWeight};
-            letter-spacing: ${typography?.letterSpacing / typography?.fontSize}em;
-            line-height: ${Math.round(typography?.lineHeightPx) / typography?.fontSize};
-            text-transform: ${typography?.textCase === 'UPPER' ? 'uppercase' : 'none'};
-        `;
+      font-family: '${typography.fontFamily}';
+      font-size:  ${size};
+      font-weight: ${typography?.fontWeight};
+      letter-spacing: ${typography?.letterSpacing / typography?.fontSize}em;
+      line-height: ${Math.round(typography?.lineHeightPx) / typography?.fontSize};
+      text-transform: ${typography?.textCase === 'UPPER' ? 'uppercase' : 'none'};
+    `;
   };
 
   private formatTypographyTs = (typography: TypeStyle) => {
