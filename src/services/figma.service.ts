@@ -2,6 +2,7 @@ import 'dotenv/config';
 import fetch from 'node-fetch';
 import { Style, StylesApi } from '../models/figma-styles.model';
 import { FigmaDocument, FigmaFileModel } from '../models/figma.model';
+import { messageLog } from '../utils/log-messages';
 
 const baseFigmaUrl = async (relativeUrl: string): Promise<any> => {
   const response = await fetch(`https://api.figma.com/v1/${relativeUrl}`, {
@@ -27,7 +28,7 @@ export const getFigmaFileByNodeId = async (nodeId: string, figmaFileId: string):
       throw new Error("Node doesn't exist");
     }
 
-    console.info(`Finished getting node id ${nodeId}`);
+    messageLog(`Found node id ${id}`, 'info');
     return node.document as FigmaDocument;
   } catch (error) {
     throw new Error(`Error trying to get node id ${nodeId}: ${error}`);

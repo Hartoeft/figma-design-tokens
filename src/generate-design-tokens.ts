@@ -5,6 +5,7 @@ import { getFigmaFileByNodeId, getFigmaStyles } from './services/figma.service';
 import { createTokenFile } from './utils/create-file';
 import { findColorTokens, findEffectTokens, findTypographyTokens } from './utils/find-tokens';
 import { colorTokenOutput, formatEffectToken, typographyTokenOutput } from './utils/format-tokens';
+import { messageLog } from './utils/log-messages';
 
 export class GenerateDesignTokens {
   private config: Config;
@@ -36,10 +37,10 @@ export class GenerateDesignTokens {
   }
 
   private init = async (nodesList: NodesList[]) => {
+    messageLog('Trying to get data from Figma api, please wait...', 'info');
     try {
       this.styles = await getFigmaStyles(this.config.figmaFileId);
-
-      Promise.all(
+      await Promise.all(
         nodesList.map(async (node) => {
           const nodeDocument = await getFigmaFileByNodeId(node.nodeId, this.config.figmaFileId);
           if (!nodeDocument) {
@@ -54,13 +55,13 @@ export class GenerateDesignTokens {
               return await this.generateEffectsToken(nodeDocument);
 
             default:
-              console.error(`No match for ${node.lookFor}`);
+              messageLog(`No match for ${node.lookFor}`, 'error');
           }
         }),
       );
-      console.info('Completed getting data from Figma api');
+      messageLog('Completed getting data from Figma api', 'success');
     } catch (error) {
-      console.error(error);
+      messageLog(error as string, 'error');
     }
   };
 
@@ -73,7 +74,7 @@ export class GenerateDesignTokens {
           .map((style) => {
             const color = findColorTokens(style.node_id, nodeDocument?.children || []);
             if (!color) {
-              console.info(`Info: Color style ${style.name} is not being used in your color node in figma `);
+              messageLog(`Info: Color style ${style.name} is not being used in your color node in figma `, 'warning');
             }
 
             const colorItem: IStyleObject = {
@@ -87,9 +88,9 @@ export class GenerateDesignTokens {
       console.groupEnd();
       const colorTokens = colorTokenOutput(colorStyles, this.isCssOutput);
       await createTokenFile(colorTokens, 'color', nodeDocument.id, this.config.distFolder, this.config.fileExportType);
-      console.info('Finished getting color styles!');
+      messageLog('Finished getting color styles!', 'info');
     } catch (error) {
-      console.error('Error trying to get color styles', error);
+      messageLog(`Error trying to get color styles error: ${error}`, 'error');
     }
   };
 
@@ -122,7 +123,7 @@ export class GenerateDesignTokens {
       );
       console.info('Finished getting typography styles!');
     } catch (error) {
-      console.error('Error trying to get typography styles', error);
+      messageLog(`Error trying to get typography styles: ${error}`, 'error');
     }
   };
 
@@ -154,9 +155,9 @@ export class GenerateDesignTokens {
         this.config.distFolder,
         this.config.fileExportType,
       );
-      console.info('Finished getting effect styles!');
+      messageLog('Finished getting effect styles!', 'info');
     } catch (error) {
-      console.error('Error trying to get color styles', error);
+      messageLog(`Error trying to get color styles: ${error}`, 'error');
     }
   };
 
