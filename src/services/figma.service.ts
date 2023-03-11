@@ -10,7 +10,6 @@ const baseFigmaUrl = async (relativeUrl: string): Promise<any> => {
       'X-FIGMA-TOKEN': process.env.FIGMA_TOKEN || '',
     },
   });
-  console.log(`https://api.figma.com/v1/${relativeUrl}`, process.env.FIGMA_TOKEN);
 
   return response.json();
 };
@@ -20,9 +19,11 @@ export const getFigmaFile = (figmaFileId: string): Promise<FigmaFileModel> => {
 };
 
 export const getFigmaFileByNodeId = async (nodeId: string, figmaFileId: string): Promise<FigmaDocument> => {
+  const id = nodeId.replace('%3A', ':').trim();
+
   try {
-    const figmaFileData = await baseFigmaUrl(`files/${figmaFileId}/nodes?ids=${nodeId}`);
-    const node = figmaFileData.nodes[nodeId];
+    const figmaFileData = await baseFigmaUrl(`files/${figmaFileId}/nodes?ids=${id}`);
+    const node = figmaFileData.nodes[id];
 
     if (!node) {
       throw new Error("Node doesn't exist");
@@ -31,7 +32,7 @@ export const getFigmaFileByNodeId = async (nodeId: string, figmaFileId: string):
     messageLog(`Found node id ${id}`, 'info');
     return node.document as FigmaDocument;
   } catch (error) {
-    throw new Error(`Error trying to get node id ${nodeId}: ${error}`);
+    throw new Error(`Error trying to get node id ${id}: ${error}`);
   }
 };
 
