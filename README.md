@@ -10,10 +10,16 @@ Currently you can select too output __CSS__ (css classes and css-variables) or _
 
 ## How to use
 
-- Add your figma API Token in a environment ".env" file
+- Add your figma API Token in a environment ".env" file or add it to the constructors config
 
 ```.env
     FIGMA_TOKEN=ADD_YOUR_TOKEN_HERE
+```
+
+or
+
+```.ts
+    figmaApiToken: 'ADD_YOUR_TOKEN_HERE'
 ```
 
 - Create a typescript file and add the following to the file
@@ -35,6 +41,7 @@ new GenerateDesignTokens({
     // fileExportType: 'css',
     // distFolder: 'design/tokens',
     // customFluidFontSizeFunction: (fontSize: number) => `${fontSize}rem`,
+    // figmaApiToken: 'your token'
 });
 ```
 

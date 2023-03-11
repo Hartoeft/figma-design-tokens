@@ -1,6 +1,6 @@
 export interface NodesList {
   /**
-   * NOTE: NODE_ID must be with a ":" and not special characters
+   * Can be found in the url of the figma file, when you click on a node
    */
   nodeId: string;
   lookFor: 'typography' | 'colors' | 'effects';
@@ -8,7 +8,7 @@ export interface NodesList {
 
 export type FileExportType = 'ts' | 'css';
 
-export interface Config {
+export interface IConfig {
   figmaFileId: string;
   figmaTeamId: string;
   nodesList: NodesList[];
@@ -36,4 +36,11 @@ export interface Config {
    * @default './design/tokens'
    */
   distFolder?: string;
+
+  /**
+   * Don't render tokens that are missing from the Figma node id.
+   */
+  ignoreMissingTokens?: boolean;
+
+  formatAs?: 'tailwind' | 'default';
 }

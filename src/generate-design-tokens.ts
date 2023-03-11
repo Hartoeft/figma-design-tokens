@@ -1,4 +1,4 @@
-import { Config, NodesList } from './models/config.model';
+import { IConfig, NodesList } from './models/config.model';
 import { Style } from './models/figma-styles.model';
 import { FigmaDocument, IEffect, IStyleObject, ITypographyStyles, TypeStyle } from './models/figma.model';
 import { getFigmaFileByNodeId, getFigmaStyles } from './services/figma.service';
@@ -8,7 +8,7 @@ import { colorTokenOutput, formatEffectToken, typographyTokenOutput } from './ut
 import { messageLog } from './utils/log-messages';
 
 export class GenerateDesignTokens {
-  private config: Config;
+  private config: IConfig;
   private styles: Style[] = [];
   public get isCssOutput(): boolean {
     return this.config.fileExportType === 'css';
@@ -18,7 +18,7 @@ export class GenerateDesignTokens {
    * Generates design token files from a Figma team library
    * @param config - Configuration object
    */
-  constructor(config: Config) {
+  constructor(config: IConfig) {
     this.config = config;
 
     if (this.config.figmaApiToken) {
