@@ -4,6 +4,10 @@ Use this package to output defined styles in your figma document.
 
 Currently you can select too output __CSS__ (css classes and css-variables) or __typescript files__ to be used with styled-components like Emotion<https://emotion.sh/docs/introduction>. See example of output further below.
 
+There is also an tailwindcss options, for generate typography that matches the tailwind configuration.
+Set the __formatAs__ to `tailwindcss`.
+Tailwindcss support is a WIP. Currently only support for typography.
+
 - Currently working with __Text styles__, __Color styles__ and __Effects Styles__ from figma.
 - Remember to export your styles in figma as a team library.
 ![figma](documentation/images/figma-library.jpg)
@@ -35,13 +39,13 @@ new GenerateDesignTokens({
         { nodeId: '1:1', lookFor: 'colors' },
         { nodeId: '1:2', lookFor: 'typography' },
         { nodeId: '1:3', lookFor: 'effects' },
-        { nodeId: '1:4', lookFor: 'effects' },
     ],
     // Optionals:
     // fileExportType: 'css',
     // distFolder: 'design/tokens',
     // customFluidFontSizeFunction: (fontSize: number) => `${fontSize}rem`,
     // figmaApiToken: 'your token'
+    // ignoreMissingTokens: boolean,
 });
 ```
 

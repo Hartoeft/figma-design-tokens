@@ -38,7 +38,8 @@ export interface IConfig {
   distFolder?: string;
 
   /**
-   * Don't render tokens that are missing from the Figma node id.
+   * @description Decides if missing tokens should be ignored or not. Defaults to showing const with value 'missing'
+   * @example export const myColor = 'missing';
    */
   ignoreMissingTokens?: boolean;
 

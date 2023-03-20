@@ -16,7 +16,7 @@ export interface ITypographyStyles {
 
 export interface IStyleObject {
   name: string;
-  color: string;
+  color?: string;
   nodeId?: string;
   description?: string;
 }

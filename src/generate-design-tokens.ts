@@ -72,19 +72,24 @@ export class GenerateDesignTokens {
         this.styles
           ?.filter((style) => style.style_type === 'FILL')
           .map((style) => {
-            const color = findColorTokens(style.node_id, nodeDocument?.children || []);
+            let color = findColorTokens(style.node_id, nodeDocument?.children || []);
             if (!color) {
               messageLog(`Info: Color style ${style.name} is not being used in your color node in figma `, 'warning');
+              if (!this.config.ignoreMissingTokens) {
+                color = 'missing';
+              }
             }
 
             const colorItem: IStyleObject = {
               nodeId: style.node_id,
               description: style.description,
               name: style.name,
-              color: color || ``,
+              color: color,
             };
             return colorItem;
-          }) || [];
+          })
+          .filter((item) => item.color)
+          .sort((a, b) => (a.name > b.name ? 1 : -1)) || [];
       console.groupEnd();
       const colorTokens = colorTokenOutput(colorStyles, this.isCssOutput);
       await createTokenFile(colorTokens, 'color', nodeDocument.id, this.config.distFolder, this.config.fileExportType);
@@ -104,24 +109,21 @@ export class GenerateDesignTokens {
             const cssStyle = typographyValue ? this.formatTypography(typographyValue) : undefined;
 
             const typographyItem: ITypographyStyles = {
-              name: style.name || 'Missing name',
+              name: style.name,
               description: style.description || '',
               nodeId: style.node_id,
               cssStyle,
             };
 
             return typographyItem;
-          }) || [];
+          })
+          .filter((item) => item.name)
+          .filter((item) => (this.config.ignoreMissingTokens ? item.cssStyle : true))
+          .sort((a, b) => (a.name > b.name ? 1 : -1)) || [];
 
-      const colorTokens = typographyTokenOutput(typographyStyles, this.isCssOutput);
-      await createTokenFile(
-        colorTokens,
-        'typography',
-        nodeDocument.id,
-        this.config.distFolder,
-        this.config.fileExportType,
-      );
-      console.info('Finished getting typography styles!');
+      const tokens = typographyTokenOutput(typographyStyles, this.isCssOutput, this.config.formatAs);
+      await createTokenFile(tokens, 'typography', nodeDocument.id, this.config.distFolder, this.config.fileExportType);
+      messageLog('Finished getting typography styles!', 'info');
     } catch (error) {
       messageLog(`Error trying to get typography styles: ${error}`, 'error');
     }

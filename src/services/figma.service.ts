@@ -46,6 +46,6 @@ export const getFigmaStyles = async (figmaFileId: string): Promise<Style[]> => {
     } = (await baseFigmaUrl(`files/${figmaFileId}/styles`)) as StylesApi;
     return styles;
   } catch (error) {
-    throw new Error(`Error trying to get styles. Are you sure you are using the right Figma file id: ${error}`);
+    throw new Error(`Error trying to get styles. Are you sure you are using the right Figma file id:\n ${error}`);
   }
 };
