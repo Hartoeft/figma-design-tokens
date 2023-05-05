@@ -5,7 +5,8 @@ import { FigmaDocument, FigmaFileModel } from '../models/figma.model';
 import { messageLog } from '../utils/log-messages';
 
 const baseFigmaUrl = async (relativeUrl: string): Promise<any> => {
-  const response = await fetch(`https://api.figma.com/v1/${relativeUrl}`, {
+  const url = new URL(relativeUrl, 'https://api.figma.com/v1/');
+  const response = await fetch(url, {
     headers: {
       'X-FIGMA-TOKEN': process.env.FIGMA_TOKEN || '',
     },
@@ -19,7 +20,7 @@ export const getFigmaFile = (figmaFileId: string): Promise<FigmaFileModel> => {
 };
 
 export const getFigmaFileByNodeId = async (nodeId: string, figmaFileId: string): Promise<FigmaDocument> => {
-  const id = nodeId.replace('%3A', ':').trim();
+  const id = nodeId.replace('%3A', ':').replaceAll('-', ':').trim();
 
   try {
     const figmaFileData = await baseFigmaUrl(`files/${figmaFileId}/nodes?ids=${id}`);
