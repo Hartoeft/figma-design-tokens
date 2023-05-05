@@ -22,14 +22,15 @@ export class GenerateDesignTokens {
     this.config = config;
 
     if (this.config.figmaApiToken) {
+      messageLog('Using Figma API token from config file, instead of .env variable', 'info');
       process.env.FIGMA_TOKEN = config.figmaApiToken;
     }
 
     if (!process.env.FIGMA_TOKEN) {
-      console.error('Add your FIGMA_TOKEN to an .env file, located in the root of the project');
+      messageLog('Add your FIGMA_TOKEN to an .env file, located in the root of the project', 'error');
       return;
     } else if (Array.isArray(this.config.nodesList) && !this.config.nodesList.length) {
-      console.error('Add at least one node list item');
+      messageLog('Add at least one node list item', 'error');
       return;
     }
 
