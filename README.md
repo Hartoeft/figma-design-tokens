@@ -26,10 +26,11 @@ or
     figmaApiToken: 'ADD_YOUR_TOKEN_HERE'
 ```
 
-- Create a typescript file and add the following to the file
-- Example ./src/design-tokens.ts
+- Create a `.mjs` file, could be `design-tokens.mjs`
 
-```ts
+```js
+// Example
+// design-tokens.mjs
 import { GenerateDesignTokens } from 'figma-design-tokens';
 
 new GenerateDesignTokens({
