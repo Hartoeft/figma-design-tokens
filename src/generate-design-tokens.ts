@@ -41,6 +41,15 @@ export class GenerateDesignTokens {
     messageLog('Trying to get data from Figma api, please wait...', 'info');
     try {
       this.styles = await getFigmaStyles(this.config.figmaFileId);
+
+      if (this.styles?.length === 0) {
+        messageLog(
+          `No styles found in Figma file. Are you sure, you have published your styles in Figma?\nGuide can be found here https://help.figma.com/hc/en-us/articles/360025508373-Publish-styles-and-components`,
+          'warning',
+        );
+        return;
+      }
+
       await Promise.all(
         nodesList.map(async (node) => {
           const nodeDocument = await getFigmaFileByNodeId(node.nodeId, this.config.figmaFileId);
