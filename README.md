@@ -50,12 +50,12 @@ new GenerateDesignTokens({
 });
 ```
 
-- Open terminal and run following command in root folder `npx ts-node src/design-tokens.ts`
+- Open terminal and run following command in root folder `node src/design-tokens.mjs`
 - Optional: You could add it under your scripts in package.json. e.g.
 
 ```json
 "scripts": {
-    "get-design-tokens": "ts-node src/design-tokens.ts"
+    "get-design-tokens": "node src/design-tokens.mjs"
 }
 ```
 
