@@ -22,14 +22,15 @@ export class GenerateDesignTokens {
     this.config = config;
 
     if (this.config.figmaApiToken) {
+      messageLog('Using Figma API token from config file, instead of .env variable', 'info');
       process.env.FIGMA_TOKEN = config.figmaApiToken;
     }
 
     if (!process.env.FIGMA_TOKEN) {
-      console.error('Add your FIGMA_TOKEN to an .env file, located in the root of the project');
+      messageLog('Add your FIGMA_TOKEN to an .env file, located in the root of the project', 'error');
       return;
     } else if (Array.isArray(this.config.nodesList) && !this.config.nodesList.length) {
-      console.error('Add at least one node list item');
+      messageLog('Add at least one node list item', 'error');
       return;
     }
 
@@ -40,6 +41,15 @@ export class GenerateDesignTokens {
     messageLog('Trying to get data from Figma api, please wait...', 'info');
     try {
       this.styles = await getFigmaStyles(this.config.figmaFileId);
+
+      if (this.styles?.length === 0) {
+        messageLog(
+          `No styles found in Figma file. Are you sure, you have published your styles in Figma?\nGuide can be found here https://help.figma.com/hc/en-us/articles/360025508373-Publish-styles-and-components`,
+          'warning',
+        );
+        return;
+      }
+
       await Promise.all(
         nodesList.map(async (node) => {
           const nodeDocument = await getFigmaFileByNodeId(node.nodeId, this.config.figmaFileId);
