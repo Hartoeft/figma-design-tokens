@@ -6,7 +6,7 @@ export interface NodesList {
   lookFor: 'typography' | 'colors' | 'effects';
 }
 
-export type FileExportType = 'ts' | 'css';
+export type FileExportType = 'ts' | 'js' | 'css';
 
 export interface IConfig {
   figmaFileId: string;

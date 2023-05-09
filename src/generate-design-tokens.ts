@@ -101,8 +101,14 @@ export class GenerateDesignTokens {
           .filter((item) => item.color)
           .sort((a, b) => (a.name > b.name ? 1 : -1)) || [];
       console.groupEnd();
-      const colorTokens = colorTokenOutput(colorStyles, this.isCssOutput);
-      await createTokenFile(colorTokens, 'color', nodeDocument.id, this.config.distFolder, this.config.fileExportType);
+      const colorTokens = colorTokenOutput(colorStyles, this.isCssOutput, this.config.formatAs);
+      await createTokenFile(
+        colorTokens,
+        'color',
+        nodeDocument.id,
+        this.config.distFolder,
+        this.config.formatAs === 'tailwind' ? 'js' : this.config.fileExportType,
+      );
       messageLog('Finished getting color styles!', 'info');
     } catch (error) {
       messageLog(`Error trying to get color styles error: ${error}`, 'error');
@@ -132,7 +138,13 @@ export class GenerateDesignTokens {
           .sort((a, b) => (a.name > b.name ? 1 : -1)) || [];
 
       const tokens = typographyTokenOutput(typographyStyles, this.isCssOutput, this.config.formatAs);
-      await createTokenFile(tokens, 'typography', nodeDocument.id, this.config.distFolder, this.config.fileExportType);
+      await createTokenFile(
+        tokens,
+        'typography',
+        nodeDocument.id,
+        this.config.distFolder,
+        this.config.formatAs === 'tailwind' ? 'js' : this.config.fileExportType,
+      );
       messageLog('Finished getting typography styles!', 'info');
     } catch (error) {
       messageLog(`Error trying to get typography styles: ${error}`, 'error');
