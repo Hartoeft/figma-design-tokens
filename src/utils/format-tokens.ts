@@ -67,12 +67,12 @@ const formatColorOutputTs = (colorTokens: IStyleObject[], formatAs?: string): st
         [key: string]: string;
       };
     } = colorTokens.reduce((acc: any, token) => {
-      const [colorName, secondName = 'DEFAULT'] = token.name.toLowerCase().split('/');
+      const [colorName, secondName] = token.name.toLowerCase().split('/');
       return {
         ...acc,
         [formatName(colorName)]: {
           ...acc[formatName(colorName)],
-          [formatName(secondName)]: token.color,
+          [secondName ? formatName(secondName) : 'DEFAULT']: token.color,
         },
       };
     }, {});
