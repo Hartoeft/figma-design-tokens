@@ -26,8 +26,13 @@ const formatName = (name: string): string => {
   return splitName.join('').replaceAll(/[-/() ]/g, '');
 };
 
-export const colorTokenOutput = (colorTokens: IStyleObject[], isCssOutput: boolean, formatAs?: string) => {
-  const content = isCssOutput ? formatColorOutputCss(colorTokens) : formatColorOutputTs(colorTokens, formatAs);
+export const colorTokenOutput = (
+  colorTokens: IStyleObject[],
+  isCssOutput: boolean,
+  formatAs?: string,
+  type?: IFormatType,
+) => {
+  const content = isCssOutput ? formatColorOutputCss(colorTokens) : formatColorOutputTs(colorTokens, formatAs, type);
   return formattedOutput(content, isCssOutput);
 };
 
