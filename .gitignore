@@ -1,5 +1,6 @@
 node_modules
 .env
 dist/
-example/
+example/tokens.mjs
+example/tokens.ts
 design/
