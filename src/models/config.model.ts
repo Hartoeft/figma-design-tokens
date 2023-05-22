@@ -1,3 +1,5 @@
+import { IFormatType } from './find-tokens.model';
+
 export interface NodesList {
   /**
    * Can be found in the url of the figma file, when you click on a node
@@ -43,5 +45,13 @@ export interface IConfig {
    */
   ignoreMissingTokens?: boolean;
 
+  /**
+   * `fileExportType` has to be `js` or `ts, if tailwind is selected.
+   */
   formatAs?: 'tailwind' | 'default';
+
+  /**
+   * WIP: May change in the future
+   */
+  tokensOutput?: IFormatType;
 }

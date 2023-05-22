@@ -137,14 +137,13 @@ export class GenerateDesignTokens {
           .filter((item) => (this.config.ignoreMissingTokens ? item.cssStyle : true))
           .sort((a, b) => (a.name > b.name ? 1 : -1)) || [];
 
-      const tokens = typographyTokenOutput(typographyStyles, this.isCssOutput, this.config.formatAs);
-      await createTokenFile(
-        tokens,
-        'typography',
-        nodeDocument.id,
-        this.config.distFolder,
-        this.config.formatAs === 'tailwind' ? 'js' : this.config.fileExportType,
+      const tokens = typographyTokenOutput(
+        typographyStyles,
+        this.isCssOutput,
+        this.config.formatAs,
+        this.config.tokensOutput,
       );
+      await createTokenFile(tokens, 'typography', nodeDocument.id, this.config.distFolder, this.config.fileExportType);
       messageLog('Finished getting typography styles!', 'info');
     } catch (error) {
       messageLog(`Error trying to get typography styles: ${error}`, 'error');

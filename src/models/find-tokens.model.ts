@@ -21,3 +21,5 @@ export type FindEffect = {
   type: EffectType;
   effect: {};
 };
+
+export type IFormatType = 'module' | 'object';
