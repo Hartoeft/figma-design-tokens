@@ -101,7 +101,12 @@ export class GenerateDesignTokens {
           .filter((item) => item.color)
           .sort((a, b) => (a.name > b.name ? 1 : -1)) || [];
       console.groupEnd();
-      const colorTokens = colorTokenOutput(colorStyles, this.isCssOutput, this.config.formatAs);
+      const colorTokens = colorTokenOutput(
+        colorStyles,
+        this.isCssOutput,
+        this.config.formatAs,
+        this.config.tokensOutput,
+      );
       await createTokenFile(colorTokens, 'color', nodeDocument.id, this.config.distFolder, this.config.fileExportType);
       messageLog('Finished getting color styles!', 'info');
     } catch (error) {
