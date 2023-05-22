@@ -68,7 +68,7 @@ const formatColorOutputTs = (colorTokens: IStyleObject[], formatAs?: string, typ
       `;
     } else {
       content += `
-        export const typographyTokens = ${JSON.stringify(groupedColors)};
+        export const colorTokens = ${JSON.stringify(groupedColors)};
       `;
     }
   } else {
