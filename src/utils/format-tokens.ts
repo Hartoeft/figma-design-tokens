@@ -183,7 +183,17 @@ const formatTypographyOutputTailwind = (typographyTokens: ITypographyStyles[], t
     `;
   } else {
     content += `
-      export const typographyTokens = {
+      export const typographyTokens: Record<
+        string,
+        [
+          fontSize: string,
+          configuration: Partial<{
+            lineHeight: string;
+            letterSpacing: string;
+            fontWeight: string | number;
+          }>
+        ]
+      > = {
         ${contentWrapperTailwind}
       };
     `;
