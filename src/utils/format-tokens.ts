@@ -183,7 +183,9 @@ const formatTypographyOutputTailwind = (typographyTokens: ITypographyStyles[], t
     `;
   } else {
     content += `
-      export const typographyTokens: Record<
+      export const typographyTokens = {
+        ${contentWrapperTailwind}
+      } satisfies Record<
         string,
         [
           fontSize: string,
@@ -191,11 +193,9 @@ const formatTypographyOutputTailwind = (typographyTokens: ITypographyStyles[], t
             lineHeight: string;
             letterSpacing: string;
             fontWeight: string | number;
-          }>
+          }>,
         ]
-      > = {
-        ${contentWrapperTailwind}
-      };
+      >;
     `;
   }
 
